@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+.lovable/
+.tanstack/
+bun.lock
+package-lock.json
+

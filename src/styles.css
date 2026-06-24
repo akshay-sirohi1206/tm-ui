@@ -1,0 +1,175 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+/* ============================================================
+   Tata Motors — Dual Theme System
+   All visual tokens live on [data-theme]. Components read them
+   via var(--token). Default theme: "creds".
+   ============================================================ */
+
+[data-theme="creds"] {
+  --bg-base: #0B1629;
+  --bg-sidebar: #0D1B2E;
+  --bg-panel: #112240;
+  --bg-card: #162B4A;
+  --bg-card-inner: #1C3357;
+  --bg-input: #1A2E4A;
+  --bg-hover: #1E3560;
+  --bg-msg-user: #1560BD;
+  --bg-msg-assistant: #1C3357;
+  --accent-primary: #1560BD;
+  --accent-secondary: #00A3E0;
+  --accent-tata: #003087;
+  --text-primary: #E8F0FF;
+  --text-muted: #8B9EC4;
+  --text-on-accent: #FFFFFF;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  --border-accent: #1560BD;
+  --danger: #E84545;
+  --success: #22C55E;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --blur: 0px;
+  --sidebar-width: 64px;
+  --ambient: none;
+  --font-head: "Archivo", sans-serif;
+  --head-transform: uppercase;
+  --head-spacing: 0.06em;
+}
+
+[data-theme="glass-light"] {
+  --bg-base: transparent;
+  --bg-sidebar: rgba(13, 27, 46, 0.55);
+  --bg-panel: rgba(17, 34, 64, 0.45);
+  --bg-card: rgba(22, 43, 74, 0.52);
+  --bg-card-inner: rgba(255, 255, 255, 0.09);
+  --bg-input: rgba(255, 255, 255, 0.11);
+  --bg-hover: rgba(255, 255, 255, 0.13);
+  --bg-msg-user: rgba(21, 96, 189, 0.82);
+  --bg-msg-assistant: rgba(28, 51, 87, 0.65);
+  --accent-primary: #3B82F6;
+  --accent-secondary: #06B6D4;
+  --accent-tata: #1E40AF;
+  --text-primary: #E8F0FF;
+  --text-muted: #7A9BC4;
+  --text-on-accent: #FFFFFF;
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.26);
+  --border-accent: rgba(59, 130, 246, 0.6);
+  --danger: #F87171;
+  --success: #4ADE80;
+  --shadow: 0 4px 28px rgba(0, 0, 0, 0.5);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --blur: 18px;
+  --sidebar-width: 64px;
+  --ambient: radial-gradient(ellipse at 25% 40%, #0D2150 0%, #091535 45%, #060E25 100%);
+  --font-head: "Inter", sans-serif;
+  --head-transform: none;
+  --head-spacing: 0;
+}
+
+[data-theme="glass-dark"] {
+  --bg-base: transparent;
+  --bg-sidebar: rgba(5, 10, 22, 0.7);
+  --bg-panel: rgba(7, 14, 32, 0.58);
+  --bg-card: rgba(10, 20, 45, 0.65);
+  --bg-card-inner: rgba(255, 255, 255, 0.05);
+  --bg-input: rgba(255, 255, 255, 0.07);
+  --bg-hover: rgba(255, 255, 255, 0.09);
+  --bg-msg-user: rgba(21, 96, 189, 0.75);
+  --bg-msg-assistant: rgba(10, 20, 45, 0.7);
+  --accent-primary: #60A5FA;
+  --accent-secondary: #22D3EE;
+  --accent-tata: #1D4ED8;
+  --text-primary: #D8E8FF;
+  --text-muted: #5B7AAA;
+  --text-on-accent: #FFFFFF;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-accent: rgba(96, 165, 250, 0.5);
+  --danger: #FCA5A5;
+  --success: #6EE7B7;
+  --shadow: 0 4px 32px rgba(0, 0, 0, 0.65);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --blur: 18px;
+  --sidebar-width: 64px;
+  --ambient: radial-gradient(ellipse at 25% 40%, #0D2150 0%, #091535 45%, #060E25 100%);
+  --font-head: "Inter", sans-serif;
+  --head-transform: none;
+  --head-spacing: 0;
+}
+
+html,
+html * {
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+html {
+  background: var(--bg-base);
+}
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-head {
+  font-family: var(--font-head);
+  text-transform: var(--head-transform);
+  letter-spacing: var(--head-spacing);
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+.glass-surface {
+  backdrop-filter: blur(var(--blur));
+}
+
+/* Typing dots */
+@keyframes typing-bounce {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+.typing-dot {
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+
+@keyframes rec-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-primary); }
+  50% { box-shadow: 0 0 12px 2px var(--accent-primary); }
+}
+.recording-pulse {
+  animation: rec-pulse 1s infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+.skeleton {
+  background: var(--bg-hover);
+  animation: skeleton-pulse 1.4s infinite ease-in-out;
+}
+
+/* scrollbar */
+.scroll-area::-webkit-scrollbar { width: 8px; }
+.scroll-area::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+}
