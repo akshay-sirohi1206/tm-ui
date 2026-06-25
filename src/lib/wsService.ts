@@ -54,45 +54,6 @@ class WebSocketService {
     return this.ws?.readyState === WebSocket.OPEN && this.status === "connected";
   }
 
-  // Try to (re)establish the socket and wait until it is OPEN.
-  // Makes up to `attempts` connection tries; resolves true once connected,
-  // false if every attempt fails. Used to enforce WebSocket-first routing.
-  async ensureConnected(attempts = 3, perAttemptTimeoutMs = 4000): Promise<boolean> {
-    if (this.isConnected()) return true;
-    for (let i = 0; i < attempts; i++) {
-      this.connect();
-      const ok = await this.waitForOpen(perAttemptTimeoutMs);
-      if (ok) return true;
-      console.warn(`[WS] Connection attempt ${i + 1}/${attempts} failed.`);
-    }
-    return false;
-  }
-
-  private waitForOpen(timeoutMs: number): Promise<boolean> {
-    return new Promise((resolve) => {
-      if (this.isConnected()) {
-        resolve(true);
-        return;
-      }
-      let settled = false;
-      const finish = (result: boolean) => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        unsubscribe();
-        resolve(result);
-      };
-      const timer = setTimeout(() => finish(false), timeoutMs);
-      const unsubscribe = this.subscribe((status) => {
-        if (status === "connected") finish(true);
-        else if (status === "fallback" || status === "disconnected" || status === "idle") {
-          // terminal-ish states for this attempt
-          if (status !== "idle") finish(false);
-        }
-      });
-    });
-  }
-
   // ---------------- Lifecycle ----------------
   connect() {
     if (typeof window === "undefined") return;

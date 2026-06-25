@@ -97,22 +97,18 @@ export function SessionsProvider({ children }: { children: ReactNode }) {
     const sessionId = await ensureSession(text);
     setTyping(true);
     try {
-      // WebSocket-first routing:
-      // - If the socket is open, ALWAYS send via WebSocket (never REST).
-      // - If it is not open, retry the connection up to 3 times.
-      // - Only after all retries fail do we fall back to REST.
-      let useWebSocket = wsService.isConnected();
-      if (!useWebSocket) {
-        useWebSocket = await wsService.ensureConnected(3);
-      }
-
-      if (useWebSocket) {
-        await wsService.sendChat(sessionId, text);
-        console.log("[WS] Message sent via WebSocket.");
+      // WebSocket-first: prefer the live socket, fall back to REST.
+      if (wsService.isConnected()) {
+        try {
+          await wsService.sendChat(sessionId, text);
+        } catch (err) {
+          console.warn("[FALLBACK] WebSocket send failed, retrying via REST.", err);
+          await apiSendText(sessionId, text);
+          console.log("[REST] Message sent via REST API (fallback).");
+        }
       } else {
-        console.warn("[FALLBACK] WebSocket unavailable after retries — using REST API.");
         await apiSendText(sessionId, text);
-        console.log("[REST] Message sent via REST API (fallback).");
+        console.log("[REST] Message sent via REST API.");
       }
       await reloadAfterReply(sessionId);
     } finally {
