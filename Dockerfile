@@ -1,4 +1,3 @@
-# ---------- Stage 1: build ----------
 FROM oven/bun:1 AS build
 WORKDIR /app
 
@@ -9,11 +8,11 @@ ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 COPY package.json ./
 RUN bun install
+RUN node /app/node_modules/esbuild/install.js
 
 COPY . .
 RUN bun run build
 
-# ---------- Stage 2: runtime ----------
 FROM node:20-slim AS runtime
 WORKDIR /app
 
