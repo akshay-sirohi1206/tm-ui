@@ -1,9 +1,29 @@
+# Dependencies
 node_modules/
-dist/
-.env
-.env.local
-.lovable/
-.tanstack/
-bun.lock
-package-lock.json
 
+# Build outputs
+dist/
+.output/
+.nitro/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Lovable
+.lovable/
+
+# TanStack
+.tanstack/
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

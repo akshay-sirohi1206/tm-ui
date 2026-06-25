@@ -1,0 +1,12 @@
+.output
+.nitro
+.vinxi
+dist
+.git
+.gitignore
+*.log
+.env
+.env.*
+.DS_Store
+.vscode
+.idea

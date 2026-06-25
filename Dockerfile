@@ -1,25 +1,27 @@
-# Step 1: Build stage
-FROM node:20-alpine AS build
+# ---------- Stage 1: build ----------
+FROM oven/bun:1 AS build
 WORKDIR /app
-COPY package.json bun.lock package-lock.json* ./
-RUN npm install
+
+ENV NITRO_PRESET=node-server
+
+ARG VITE_API_BASE_URL="http://bharatbot-backend-alb-439988424.us-east-1.elb.amazonaws.com/api"
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
+COPY package.json ./
+RUN bun install
+
 COPY . .
-RUN npm run build
+RUN bun run build
 
-# Step 2: Production environment using Nginx
-FROM nginx:alpine
-# Vite/React ka build output dist folder mein aata hai
-COPY --from=build /app/dist /usr/share/nginx/html
+# ---------- Stage 2: runtime ----------
+FROM node:20-slim AS runtime
+WORKDIR /app
 
-# SPA Routing dashboard support ke liye Nginx config replace karo
-RUN echo 'server { \
-    listen 80; \
-    location / { \
-        root /usr/share/nginx/html; \
-        index index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+ENV NODE_ENV=production
+ENV PORT=3000
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=build /app/.output ./.output
+
+EXPOSE 3000
+
+CMD ["node", ".output/server/index.mjs"]
